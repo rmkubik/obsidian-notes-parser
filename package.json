@@ -1,17 +1,23 @@
 {
   "name": "parcel-react-starter",
   "browserslist": "> 0.5%, last 2 versions, not dead",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "",
   "dependencies": {
-    "parcel": "^2.0.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "better-sqlite3": "^9.4.3",
+    "gray-matter": "^4.0.3",
+    "parcel": "^2.12.0",
+    "process": "^0.11.10",
+    "zx": "^7.2.3"
+  },
   "scripts": {
     "start": "parcel src/index.html",
-    "build": "parcel build src/index.html"
+    "build": "parcel build src/index.html",
+    "readNotes": "zx --quiet ./scripts/readNotes.mjs '/Users/ryankubik/Google Drive/notes/personal'"
   },
   "author": "Ryan Kubik",
   "license": "UNLICENSED"
