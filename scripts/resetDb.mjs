@@ -24,5 +24,4 @@ const createGamesTable = database.prepare(
 );
 const info = createGamesTable.run();
 
-echo("hi");
 echo(info);
