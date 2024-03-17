@@ -4,7 +4,6 @@ import { Game, InsertGame, games } from "./db/schema";
 export async function createGame(game: InsertGame) {
   try {
     await db.insert(games).values(game).run();
-
     return true;
   } catch (error) {
     return false;

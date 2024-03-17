@@ -29,7 +29,7 @@ for (let gameFile of gameFiles) {
     continue;
   }
 
-  const success = createGame({
+  createGame({
     name: path.basename(gameFile, ".md"),
     filePath: gameFile,
     rating: frontmatter.data.rating,
@@ -37,10 +37,6 @@ for (let gameFile of gameFiles) {
     tags: frontmatter.data.tags,
     content: frontmatter.content,
   });
-
-  if (!success) {
-    console.log(chalk.red`Insert failed`);
-  }
 }
 
 spinner.succeed(chalk.green`Finished reading games`);

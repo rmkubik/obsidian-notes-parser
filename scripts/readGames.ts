@@ -3,4 +3,4 @@ import { readAllGames } from "../src/backend/data/games";
 
 const games = await readAllGames();
 
-console.log(`Read games: ${chalk.blue(games.length)}`);
+console.log(`Count of read games: ${chalk.blue(games.length)}`);
