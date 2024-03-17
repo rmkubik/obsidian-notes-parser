@@ -4,20 +4,32 @@
   "version": "3.0.0",
   "description": "",
   "dependencies": {
+    "@types/bun": "^1.0.8",
+    "bun": "^1.0.31",
+    "chalk": "^5.3.0",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.30.2",
+    "minimist": "^1.2.8",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "zod": "^3.22.4",
+    "zx": "^7.2.3"
   },
   "devDependencies": {
     "better-sqlite3": "^9.4.3",
+    "cli-spinner": "^0.2.10",
+    "drizzle-kit": "^0.20.14",
     "gray-matter": "^4.0.3",
+    "ora": "^8.0.1",
     "parcel": "^2.12.0",
-    "process": "^0.11.10",
-    "zx": "^7.2.3"
+    "process": "^0.11.10"
   },
   "scripts": {
-    "start": "parcel src/index.html",
-    "build": "parcel build src/index.html",
-    "readNotes": "zx --quiet ./scripts/readNotes.mjs '/Users/ryankubik/Google Drive/notes/personal'"
+    "start": "parcel src/frontend/index.html",
+    "build": "parcel build src/frontend/index.html",
+    "test": "bun test",
+    "db:migrations:generate": "drizzle-kit generate:sqlite --config=config/drizzle.config.ts",
+    "db:migrations:apply": "bun scripts/applyMigrations.ts"
   },
   "author": "Ryan Kubik",
   "license": "UNLICENSED"

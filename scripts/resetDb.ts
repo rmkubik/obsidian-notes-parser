@@ -1,12 +1,12 @@
-#!/usr/bin/env zx
-
-import Database from "better-sqlite3";
+import path from "path";
+import { Database } from "bun:sqlite";
 import { fileURLToPath } from "url";
+import chalk from "chalk";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const dbPath = path.join(__dirname, "../data/games.sqlite3");
-echo`Initializing db: ${chalk.blue(dbPath)}`;
+console.log(`Initializing db: ${chalk.blue(dbPath)}`);
 
 const database = new Database(dbPath);
 
@@ -24,4 +24,4 @@ const createGamesTable = database.prepare(
 );
 const info = createGamesTable.run();
 
-echo(info);
+console.log(info);
