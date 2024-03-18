@@ -1,5 +1,6 @@
 import * as Bun from "bun";
 import path from "path";
+import { readAllGames } from "./data/games";
 
 const BASE_PATH = "./public";
 
@@ -8,8 +9,9 @@ Bun.serve({
   async fetch(req) {
     const { pathname } = new URL(req.url);
 
-    if (pathname.startsWith("/api")) {
-      return new Response("api route");
+    if (pathname.startsWith("/api/games")) {
+      const games = await readAllGames();
+      return new Response(JSON.stringify(games));
     }
 
     const extname = path.extname(pathname);
