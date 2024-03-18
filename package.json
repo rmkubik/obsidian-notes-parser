@@ -1,12 +1,13 @@
 {
-  "name": "parcel-react-starter",
+  "name": "obsidian-parser",
   "browserslist": "> 0.5%, last 2 versions, not dead",
-  "version": "3.0.0",
+  "version": "0.0.1",
   "description": "",
   "dependencies": {
     "@types/bun": "^1.0.8",
     "bun": "^1.0.31",
     "chalk": "^5.3.0",
+    "concurrently": "^8.2.2",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.30.2",
     "minimist": "^1.2.8",
@@ -25,8 +26,11 @@
     "process": "^0.11.10"
   },
   "scripts": {
-    "start": "parcel src/frontend/index.html",
-    "build": "parcel build src/frontend/index.html",
+    "start": "concurrently \"npm:start:*\"",
+    "start:frontend": "parcel watch src/frontend/index.html --dist-dir=\"public\"",
+    "start:backend": "bun src/backend/index.ts",
+    "build": "concurrently \"npm:build:*\"",
+    "build:frontend": "parcel build src/frontend/index.html --dist-dir=\"public\"",
     "test": "bun test",
     "db:migrations:generate": "drizzle-kit generate:sqlite --config=config/drizzle.config.ts",
     "db:migrations:apply": "bun scripts/applyMigrations.ts"

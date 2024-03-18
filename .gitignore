@@ -1,5 +1,15 @@
-.DS_Store
-node_modules
-.parcel-cache
-dist
+# Env vars
 .env
+
+# Mac
+.DS_Store
+
+# Parcel
+.parcel-cache
+
+# Ignore build artifacts in public dir
+# .js / .js.map / .html
+public/index.*
+
+# Node
+node_modules
