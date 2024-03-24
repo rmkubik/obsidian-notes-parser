@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "78cc5ec5-0fa0-4bcb-bbe6-842933830954",
+  "id": "bd459056-ac55-4e6d-84cc-d3067a35ae7f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "games": {
@@ -68,6 +68,37 @@
       },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "links": {
+      "name": "links",
+      "columns": {
+        "fromPath": {
+          "name": "fromPath",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "toPath": {
+          "name": "toPath",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "links_fromPath_toPath_pk": {
+          "columns": [
+            "fromPath",
+            "toPath"
+          ],
+          "name": "links_fromPath_toPath_pk"
+        }
+      },
       "uniqueConstraints": {}
     }
   },

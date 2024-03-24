@@ -1,4 +1,9 @@
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import {
+  sqliteTable,
+  text,
+  integer,
+  primaryKey,
+} from "drizzle-orm/sqlite-core";
 
 export const games = sqliteTable("games", {
   id: integer("id").primaryKey(),
@@ -10,5 +15,26 @@ export const games = sqliteTable("games", {
   content: text("content"),
 });
 
-export type Game = typeof games.$inferSelect; // return type when queried
-export type InsertGame = typeof games.$inferInsert; // insert type
+export type Game = typeof games.$inferSelect;
+export type InsertGame = typeof games.$inferInsert;
+
+export const links = sqliteTable(
+  "links",
+  {
+    fromPath: text("fromPath").notNull(),
+    toPath: text("toPath").notNull(),
+  },
+  (table) => {
+    return {
+      pk: primaryKey({ columns: [table.fromPath, table.toPath] }),
+    };
+  }
+);
+
+export type Link = typeof links.$inferSelect;
+export type InsertLink = typeof links.$inferInsert;
+
+// it makes the most generic sense
+// to ONLY have a notes table...
+// but I want to actually query on
+// all my frontmatter properties

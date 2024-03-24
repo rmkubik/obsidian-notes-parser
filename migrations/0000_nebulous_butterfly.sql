@@ -8,4 +8,10 @@ CREATE TABLE `games` (
 	`content` text
 );
 --> statement-breakpoint
+CREATE TABLE `links` (
+	`fromPath` text NOT NULL,
+	`toPath` text NOT NULL,
+	PRIMARY KEY(`fromPath`, `toPath`)
+);
+--> statement-breakpoint
 CREATE UNIQUE INDEX `games_filePath_unique` ON `games` (`filePath`);

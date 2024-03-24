@@ -1,6 +1,7 @@
 import * as Bun from "bun";
 import path from "path";
 import { readAllGames } from "./data/games";
+import { readLinksByToPath } from "./data/links";
 
 const BASE_PATH = "./public";
 
@@ -11,7 +12,21 @@ Bun.serve({
 
     if (pathname.startsWith("/api/games")) {
       const games = await readAllGames();
-      return new Response(JSON.stringify(games));
+      const linkPromises = games.map(async (game) => {
+        if (!game.name) return game;
+        try {
+          const links = await readLinksByToPath(game.name);
+          return {
+            ...game,
+            links: links.map((link) => link.fromPath),
+          };
+        } catch (error) {
+          console.error(error);
+          return game;
+        }
+      });
+      const gamesWithLinks = await Promise.all(linkPromises);
+      return new Response(JSON.stringify(gamesWithLinks));
     }
 
     const extname = path.extname(pathname);
@@ -40,7 +55,8 @@ Bun.serve({
 
     return new Response(file);
   },
-  error() {
+  error(error) {
+    console.error(error);
     return new Response("404", { status: 404 });
   },
 });
