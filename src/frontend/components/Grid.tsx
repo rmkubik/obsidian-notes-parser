@@ -4,6 +4,7 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { ratingOrdering, ratingTextToSymbol } from "../data/ratings";
 import RatingFilter from "./RatingFilter";
+import Popover from "./Popover";
 
 const Grid = () => {
   const [data, setData] = useState(null);
@@ -56,7 +57,23 @@ const Grid = () => {
           { field: "status" },
           { field: "tags", filter: true },
           { field: "content" },
-          { field: "links" },
+          {
+            field: "links",
+            cellRenderer: ({ value }) => (
+              <Popover value={value.join(", ")}>
+                <div
+                  tabIndex="-1"
+                  role="gridcell"
+                  col-id="content"
+                  class="ag-cell ag-cell-not-inline-editing ag-cell-normal-height ag-cell-value"
+                  aria-colindex="6"
+                  // style="left: 1000px; width: 200px;"
+                >
+                  {value.join(", ")}
+                </div>
+              </Popover>
+            ),
+          },
         ]}
       />
     </div>
