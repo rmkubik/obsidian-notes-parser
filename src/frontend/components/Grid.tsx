@@ -60,7 +60,7 @@ const Grid = () => {
           {
             field: "links",
             cellRenderer: ({ value }) => (
-              <Popover value={value.join(", ")}>
+              <Popover value={value}>
                 <div
                   tabIndex="-1"
                   role="gridcell"

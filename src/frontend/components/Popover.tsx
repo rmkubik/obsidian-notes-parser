@@ -5,6 +5,30 @@ import {
   useInteractions,
 } from "@floating-ui/react";
 import React, { useState } from "react";
+import styled from "styled-components";
+
+const PopoverStyled = styled.div`
+  padding: 0.5rem;
+  max-width: 400px;
+  padding: 0.5rem;
+  display: grid;
+  grid-gap: 0.25rem;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  background-color: white;
+  border: 1px solid lightgray;
+  border-radius: 6px;
+
+  button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+  }
+`;
+
+const ReferenceStyled = styled.div`
+  cursor: pointer;
+`;
 
 const Popover: React.FC = ({ children, value }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,13 +42,12 @@ const Popover: React.FC = ({ children, value }) => {
 
   return (
     <>
-      <div ref={refs.setReference} {...getReferenceProps()}>
+      <ReferenceStyled ref={refs.setReference} {...getReferenceProps()}>
         {children}
-      </div>
+      </ReferenceStyled>
       {isOpen && (
         <FloatingPortal>
           <div
-            onClick={() => setIsOpen(false)}
             ref={refs.setFloating}
             style={{
               ...floatingStyles,
@@ -34,8 +57,13 @@ const Popover: React.FC = ({ children, value }) => {
             }}
             {...getFloatingProps()}
           >
-            {value}
-          </div>{" "}
+            <PopoverStyled>
+              <button onClick={() => setIsOpen(false)}>X</button>
+              {value.map((item) => (
+                <div>{item}</div>
+              ))}
+            </PopoverStyled>
+          </div>
         </FloatingPortal>
       )}
     </>
