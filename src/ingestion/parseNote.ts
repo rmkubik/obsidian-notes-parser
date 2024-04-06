@@ -6,7 +6,7 @@ import { notesDir } from "./config";
 
 export type NoteFile = {
   filePath: string;
-} & GrayMatterFile<string>;
+} & Pick<GrayMatterFile<string>, "content" | "data">;
 
 async function parseNote(filePath: string): Promise<NoteFile | null> {
   const fileContent = await $`cat ${filePath}`.quiet();

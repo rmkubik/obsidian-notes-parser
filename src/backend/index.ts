@@ -2,6 +2,7 @@ import * as Bun from "bun";
 import path from "path";
 import { readAllGames } from "./data/games";
 import { readLinksByToPath } from "./data/links";
+import { readPlaysForGame } from "./data/plays";
 
 const BASE_PATH = "./public";
 
@@ -16,9 +17,12 @@ Bun.serve({
         if (!game.name) return game;
         try {
           const links = await readLinksByToPath(game.name);
+          const plays = await readPlaysForGame(game);
+
           return {
             ...game,
             links: links.map((link) => link.fromPath),
+            plays: plays.map((play) => play.date),
           };
         } catch (error) {
           console.error(error);

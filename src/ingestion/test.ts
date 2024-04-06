@@ -9,6 +9,11 @@ import parseNote from "./parseNote";
 import { createLink, deleteAllLinks } from "../backend/data/links";
 import ora from "ora";
 import chalk from "chalk";
+import parsePlays from "./parseDataViewFields";
+import { createPlay, deleteAllPlays } from "../backend/data/plays";
+import parseDataViewFields from "./parseDataViewFields";
+import { readGameByName } from "../backend/data/games";
+import { json } from "drizzle-orm/mysql-core";
 
 // const gamesPath = path.join(notesDir, gamesDir);
 // const games = await parseNotesDir(gamesPath);
@@ -35,6 +40,12 @@ await deleteAllLinks();
 
 spinner.succeed(chalk.green`Deleted old links`);
 
+spinner = ora("Deleting old plays").start();
+
+await deleteAllPlays();
+
+spinner.succeed(chalk.green`Deleted old plays`);
+
 spinner = ora("Reading note files").start();
 
 let noteCount = 0;
@@ -43,20 +54,56 @@ klaw(notesDir)
   .pipe(mdOnlyFilter)
   .on("readable", async function () {
     const item = this.read();
+
+    // Sometimes a note can be read as "null"
+    // I'm not sure why this happens and if it
+    // is expected or not...
+    if (!item) return;
+
     try {
       const note = await parseNote(item.path);
       if (note) {
         noteCount += 1;
+        const noteName = path.basename(item.path, ".md");
         const links = parseLinkedNotes(note);
         links.forEach((link) =>
           createLink({
-            fromPath: path.basename(item.path, ".md"),
+            fromPath: noteName,
             toPath: link,
           })
         );
+        const fields = parseDataViewFields(note);
+        fields.forEach((field) => {
+          if (field?.key === "played") {
+            // This is NOT a robust way to check for
+            // date information at all
+            if (!isValidDate(noteName)) return;
+
+            // console.log(
+            //   noteName,
+            //   field,
+            //   field.value.slice(2, field.value.length - 2)
+            // );
+
+            const date = new Date(noteName);
+
+            // played fields will have a game link on them
+            // this is a VERY fragile way to handle this right now
+            // it should not stay this way
+            const gameId = readGameByName(
+              field.value.slice(2, field.value.length - 2)
+            )?.id;
+
+            createPlay({
+              gameId,
+              content: field.value,
+              date,
+            });
+          }
+        });
       }
     } catch (error) {
-      console.error("Error parsing file", item);
+      console.error("Error parsing file", item, error);
     }
   })
   .on("error", (err, item) => {
@@ -66,6 +113,11 @@ klaw(notesDir)
   .on("end", () => {
     spinner.succeed(chalk.green`Finished reading note count: ` + noteCount);
   });
+
+// this should be replaced by something more robust like date-fns
+function isValidDate(dateString: string) {
+  return !Number.isNaN(Date.parse(dateString));
+}
 
 // to parse backlinks
 // we need to klaw the entire notes directory

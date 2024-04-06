@@ -5,6 +5,11 @@ import {
   primaryKey,
 } from "drizzle-orm/sqlite-core";
 
+// it makes the most generic sense
+// to ONLY have a notes table...
+// but I want to actually query on
+// all my frontmatter properties
+
 export const games = sqliteTable("games", {
   id: integer("id").primaryKey(),
   name: text("name"),
@@ -34,7 +39,11 @@ export const links = sqliteTable(
 export type Link = typeof links.$inferSelect;
 export type InsertLink = typeof links.$inferInsert;
 
-// it makes the most generic sense
-// to ONLY have a notes table...
-// but I want to actually query on
-// all my frontmatter properties
+export const plays = sqliteTable("plays", {
+  gameId: integer("gameId").references(() => games.id),
+  content: text("content"),
+  date: integer("date", { mode: "timestamp" }),
+});
+
+export type Play = typeof plays.$inferSelect;
+export type InsertPlay = typeof plays.$inferInsert;

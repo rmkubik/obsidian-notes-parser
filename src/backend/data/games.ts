@@ -7,6 +7,7 @@ export async function createGame(game: InsertGame) {
     await db.insert(games).values(game).run();
     return true;
   } catch (error) {
+    console.log(game, error);
     return false;
   }
 }
@@ -35,4 +36,8 @@ export async function updateGameByName(name: string, game: InsertGame) {
   } catch (error) {
     return false;
   }
+}
+
+export async function deleteAllGames() {
+  await db.delete(games);
 }
