@@ -5,6 +5,7 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import { ratingOrdering, ratingTextToSymbol } from "../data/ratings";
 import RatingFilter from "./RatingFilter";
 import CellPopover from "./CellPopover";
+import last from "../last";
 
 const Grid = () => {
   const [data, setData] = useState(null);
@@ -55,14 +56,35 @@ const Grid = () => {
             },
           },
           { field: "status", filter: true },
-          { field: "tags", filter: true },
-          { field: "content", cellRenderer: CellPopover },
+          { field: "tags", filter: true, cellRenderer: CellPopover },
+          {
+            field: "content",
+            cellRenderer: CellPopover,
+          },
           {
             field: "links",
             filter: true,
             cellRenderer: CellPopover,
           },
-          { field: "plays", filter: true },
+          {
+            field: "plays",
+            filter: true,
+            cellRenderer: CellPopover,
+            cellRendererParams: { isDateList: true },
+            comparator: (valueA, valueB, nodeA, nodeB, isDescending) => {
+              const sortedA: number[] = valueA
+                .map((string) => new Date(string).getTime())
+                .sort((a, b) => a - b);
+              const sortedB: number[] = valueB
+                .map((string) => new Date(string).getTime())
+                .sort((a, b) => a - b);
+
+              const mostRecentTimeA = last(sortedA) ?? 0;
+              const mostRecentTimeB = last(sortedB) ?? 0;
+
+              return mostRecentTimeA - mostRecentTimeB;
+            },
+          },
         ]}
       />
     </div>

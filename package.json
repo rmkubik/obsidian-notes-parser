@@ -19,10 +19,17 @@
     "minimist": "^1.2.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "rehype-stringify": "^10.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.0",
     "styled-components": "^6.1.8",
     "through2": "^4.0.2",
+    "unified": "^11.0.5",
     "zod": "^3.22.4",
     "zx": "^7.2.3"
+  },
+  "@parcel/resolver-default": {
+    "packageExports": true
   },
   "devDependencies": {
     "better-sqlite3": "^9.4.3",
