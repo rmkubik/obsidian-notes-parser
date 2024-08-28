@@ -44,7 +44,7 @@ const Grid = () => {
               return valueA.toLowerCase().localeCompare(valueB.toLowerCase());
             },
           },
-          { field: "filePath" },
+          // { field: "filePath" },
           {
             field: "rating",
             filter: RatingFilter,

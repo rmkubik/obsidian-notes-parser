@@ -21,6 +21,7 @@ const monthNames = {
 
 const PopoverStyled = styled.div`
   max-width: 550px;
+  min-width: 300px;
   padding: 0.5rem 1rem;
 
   background-color: white;
@@ -65,22 +66,16 @@ const PopoverStyled = styled.div`
   ul {
     list-style: none;
     padding: 0;
+    margin: 0;
   }
 
   h2 {
-    margin: 0.2rem;
+    margin-top: 0.75rem;
+    margin-bottom: 0.25rem;
   }
 `;
 
 const DateList = ({ timestamps }: { timestamps: string[] }) => {
-  const sortedDates = useMemo(() => {
-    return timestamps
-      .map((timestamp) => new Date(timestamp).getTime())
-      .sort((a, b) => b - a);
-  }, [timestamps]);
-
-  // split timestamps by mo/yr
-  // add headers
   const monthSeparatedDates = useMemo(() => {
     const sortedTimestamps = timestamps
       .map((timestamp) => new Date(timestamp).getTime())
