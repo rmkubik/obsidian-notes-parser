@@ -13,3 +13,6 @@ public/index.*
 
 # Node
 node_modules
+
+# Our notes data
+*.sqlite3
