@@ -19,7 +19,13 @@ Steps to get games table:
 3. `bun start` (runs dev server)
 4. Visit: [http://localhost:8080](http://localhost:8080).
 
-These commands super temporary, but it's unlikely I'll be revisiting this project for little while. So I wanted to document how to use it this time since I just relearned a bunch about it.
+These commands are super temporary, but it's unlikely I'll be revisiting this project for little while. So I wanted to document how to use it this time since I just relearned a bunch about it.
+
+## Generating initial DB
+
+On fresh clone, the `data/` directory is empty except for a `.gitkeep` file. To generate a new database file you need to run the database migrations command. The previous ingestion steps will fail if the database hasn't been created yet.
+
+> `bun db:migrations:apply`
 
 ## Sqlite Debugger
 
