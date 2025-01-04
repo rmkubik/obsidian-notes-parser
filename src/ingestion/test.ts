@@ -14,6 +14,8 @@ import { createPlay, deleteAllPlays } from "../backend/data/plays";
 import parseDataViewFields from "./parseDataViewFields";
 import { readGameByName } from "../backend/data/games";
 import { json } from "drizzle-orm/mysql-core";
+import { createRead, deleteAllReads } from "../backend/data/reads";
+import { readBookByName } from "../backend/data/books";
 
 // const gamesPath = path.join(notesDir, gamesDir);
 // const games = await parseNotesDir(gamesPath);
@@ -45,6 +47,12 @@ spinner = ora("Deleting old plays").start();
 await deleteAllPlays();
 
 spinner.succeed(chalk.green`Deleted old plays`);
+
+spinner = ora("Deleting old reads").start();
+
+await deleteAllReads();
+
+spinner.succeed(chalk.green`Deleted old reads`);
 
 spinner = ora("Reading note files").start();
 
@@ -79,12 +87,6 @@ klaw(notesDir)
             // date information at all
             if (!isValidDate(noteName)) return;
 
-            // console.log(
-            //   noteName,
-            //   field,
-            //   field.value.slice(2, field.value.length - 2)
-            // );
-
             const date = new Date(noteName);
 
             // played fields will have a game link on them
@@ -96,6 +98,26 @@ klaw(notesDir)
 
             createPlay({
               gameId,
+              content: field.value,
+              date,
+            });
+          }
+          if (field?.key === "read") {
+            // This is NOT a robust way to check for
+            // date information at all
+            if (!isValidDate(noteName)) return;
+
+            const date = new Date(noteName);
+
+            // played fields will have a game link on them
+            // this is a VERY fragile way to handle this right now
+            // it should not stay this way
+            const bookId = readBookByName(
+              field.value.slice(2, field.value.length - 2)
+            )?.id;
+
+            createRead({
+              bookId,
               content: field.value,
               date,
             });

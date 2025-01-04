@@ -7,16 +7,16 @@ import RatingFilter from "./RatingFilter";
 import CellPopover from "./CellPopover";
 import last from "../last";
 
-const Grid = () => {
+const BookGrid = () => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch("/api/games");
-      const games = await response.json();
-      const mapped = games.map((game) => ({
-        ...game,
-        rating: ratingTextToSymbol(game.rating),
+      const response = await fetch("/api/books");
+      const books = await response.json();
+      const mapped = books.map((book) => ({
+        ...book,
+        rating: ratingTextToSymbol(book.rating),
       }));
 
       setData(mapped);
@@ -67,7 +67,7 @@ const Grid = () => {
             cellRenderer: CellPopover,
           },
           {
-            field: "plays",
+            field: "reads",
             filter: true,
             cellRenderer: CellPopover,
             cellRendererParams: { isDateList: true },
@@ -91,4 +91,4 @@ const Grid = () => {
   );
 };
 
-export default Grid;
+export default BookGrid;

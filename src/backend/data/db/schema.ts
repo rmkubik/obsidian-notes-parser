@@ -47,3 +47,25 @@ export const plays = sqliteTable("plays", {
 
 export type Play = typeof plays.$inferSelect;
 export type InsertPlay = typeof plays.$inferInsert;
+
+export const books = sqliteTable("books", {
+  id: integer("id").primaryKey(),
+  name: text("name"),
+  filePath: text("filePath").notNull().unique(),
+  rating: text("rating"),
+  status: text("status"),
+  tags: text("tags"),
+  content: text("content"),
+});
+
+export type Book = typeof books.$inferSelect;
+export type InsertBook = typeof books.$inferInsert;
+
+export const reads = sqliteTable("reads", {
+  bookId: integer("bookId").references(() => books.id),
+  content: text("content"),
+  date: integer("date", { mode: "timestamp" }),
+});
+
+export type Read = typeof reads.$inferSelect;
+export type InsertRead = typeof reads.$inferInsert;

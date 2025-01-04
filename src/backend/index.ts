@@ -3,6 +3,8 @@ import path from "path";
 import { readAllGames } from "./data/games";
 import { readLinksByToPath } from "./data/links";
 import { readPlaysForGame } from "./data/plays";
+import { readAllBooks } from "./data/books";
+import { readReadsForBook } from "./data/reads";
 
 const BASE_PATH = "./public";
 
@@ -31,6 +33,39 @@ Bun.serve({
       });
       const gamesWithLinks = await Promise.all(linkPromises);
       return new Response(JSON.stringify(gamesWithLinks));
+    }
+
+    if (pathname.startsWith("/api/books")) {
+      const books = await readAllBooks();
+      const linkPromises = books.map(async (book) => {
+        if (!book.name) return book;
+        try {
+          const links = await readLinksByToPath(book.name);
+          const reads = await readReadsForBook(book);
+
+          return {
+            ...book,
+            links: links.map((link) => link.fromPath),
+            reads: reads.map((play) => play.date),
+          };
+        } catch (error) {
+          console.error(error);
+          return book;
+        }
+      });
+      const booksWithLinks = await Promise.all(linkPromises);
+      return new Response(JSON.stringify(booksWithLinks));
+    }
+
+    /**
+     * Let client handle all /app routing
+     */
+    if (pathname.startsWith("/app")) {
+      // We don't have a special "index.html" for the app
+      const filePath = path.join(BASE_PATH, "index.html");
+      const file = Bun.file(filePath);
+
+      return new Response(file);
     }
 
     const extname = path.extname(pathname);
