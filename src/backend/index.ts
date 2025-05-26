@@ -13,6 +13,9 @@ Bun.serve({
   async fetch(req) {
     const { pathname } = new URL(req.url);
 
+    // Redirect root path to app
+    if (pathname === "/") return Response.redirect("/app", 301);
+
     if (pathname.startsWith("/api/games")) {
       const games = await readAllGames();
       const linkPromises = games.map(async (game) => {

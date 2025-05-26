@@ -1,6 +1,6 @@
 import React from "react";
 import GameGrid from "./GameGrid";
-import { BrowserRouter, Route, Routes } from "react-router";
+import { BrowserRouter, Link, Route, Routes } from "react-router";
 import BookGrid from "./BookGrid";
 
 const App = () => {
@@ -9,7 +9,19 @@ const App = () => {
       <Routes>
         <Route index element={<h1>Hi</h1>} />
         <Route path="app">
-          <Route index element={<GameGrid />} />
+          <Route
+            index
+            element={
+              <ul>
+                <li>
+                  <Link to="/app/games">Games database</Link>
+                </li>
+                <li>
+                  <Link to="/app/books">Books database</Link>
+                </li>
+              </ul>
+            }
+          />
           <Route path="games">
             <Route index element={<GameGrid />} />
           </Route>
