@@ -6,6 +6,21 @@ This project uses `bun` for scripting. We're using `zx` for running scripts. The
 
 Inspect database contents - you can use `SQLite Explorer` VS Code extension - right click on the db file `data/notes.sqlite3` and pick `Open Database`.
 
+## Tasks
+
+Tasks are run with the cli tool [xc](https://xcfile.dev/getting-started/). So `xc run` runs task below.
+
+### Run
+
+Clear existing notes. Ingest new notes and rebuild note database. Start parser site.
+
+```bash
+bun src/ingestion/readNotes.ts
+bun src/ingestion/test.ts
+open "http://localhost:8080"
+bun start
+```
+
 ## How to use
 
 Currently, this project is very WIP. The steps to getting a list of games that you can manipulate is pretty jank right now.
